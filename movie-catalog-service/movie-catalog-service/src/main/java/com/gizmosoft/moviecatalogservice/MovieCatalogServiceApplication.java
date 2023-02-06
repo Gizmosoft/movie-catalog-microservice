@@ -8,6 +8,7 @@ public class MovieCatalogServiceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MovieCatalogServiceApplication.class, args);
+		System.out.println("Created a Rest Controller!");
 	}
 
 }
