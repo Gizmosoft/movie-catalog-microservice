@@ -18,7 +18,7 @@ target/
 *.iws
 *.iml
 *.ipr
-movie-catalog-service/.idea
+*/.idea
 movie-info-service/.idea
 ratings-data-service/.idea
 
