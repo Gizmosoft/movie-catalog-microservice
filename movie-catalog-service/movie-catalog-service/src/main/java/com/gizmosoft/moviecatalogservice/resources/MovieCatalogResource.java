@@ -26,6 +26,7 @@ public class MovieCatalogResource {
         List<Rating> ratings = Arrays.asList(
                 new Rating("1234", 4),
                 new Rating("5678", 3)
+        );
 
         return ratings.stream().map(rating -> {
             Movie movie = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(), Movie.class);
