@@ -18,6 +18,9 @@ target/
 *.iws
 *.iml
 *.ipr
+*/.idea
+movie-info-service/.idea
+ratings-data-service/.idea
 
 ### NetBeans ###
 /nbproject/private/
@@ -31,3 +34,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+.idea
+.idea
