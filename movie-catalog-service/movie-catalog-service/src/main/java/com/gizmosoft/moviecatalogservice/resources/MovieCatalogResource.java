@@ -3,6 +3,7 @@ package com.gizmosoft.moviecatalogservice.resources;
 import com.gizmosoft.moviecatalogservice.model.CatalogItem;
 import com.gizmosoft.moviecatalogservice.model.Movie;
 import com.gizmosoft.moviecatalogservice.model.Rating;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,11 +18,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/catalog")
 public class MovieCatalogResource {
 
+    // We are calling the bean which we created
+    @Autowired
+    private RestTemplate restTemplate;
+
     @RequestMapping("/{userId}")
     public List<CatalogItem> getCatalog(@PathVariable("userId") String userId){
-
-        RestTemplate restTemplate = new RestTemplate();
-
         // get ID of rated movies - hard coding using the Rating model
         List<Rating> ratings = Arrays.asList(
                 new Rating("1234", 4),
