@@ -36,12 +36,15 @@ public class MovieCatalogResource {
 //                new Rating("5678", 3)
 //        );
         // Using RestTemplate
-        // get ID of rated movies - using API call to the Ratings service
-        UserRating ratings = restTemplate.getForObject("http://localhost:8083/ratingsdata/users/" + userId, UserRating.class);
+        // get ID of rated movies - using API call to the Ratings service ; we are hard coding API endpoint URLs here which will be avoided when Eureka Discovery server is used
+        // UserRating ratings = restTemplate.getForObject("http://localhost:8083/ratingsdata/users/" + userId, UserRating.class);
+
+        // Using spring.application.name used in Eureka config for client side service discovery
+        UserRating ratings = restTemplate.getForObject("http://ratings-data-service/ratingsdata/users/" + userId, UserRating.class);
 
         return ratings.getUserRating().stream().map(rating -> {
             // For each movie ID, call movie info service and get details
-            Movie movie = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(), Movie.class);
+            Movie movie = restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieId(), Movie.class);
 
             // Using WebClient
 //            Movie movie = webClientBuilder.build()
