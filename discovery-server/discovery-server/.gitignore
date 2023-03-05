@@ -12,16 +12,12 @@ target/
 .settings
 .springBeans
 .sts4-cache
-.properties
 
 ### IntelliJ IDEA ###
 .idea
 *.iws
 *.iml
 *.ipr
-*/.idea
-movie-info-service/.idea
-ratings-data-service/.idea
 
 ### NetBeans ###
 /nbproject/private/
@@ -35,7 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-
-.idea
-.idea
