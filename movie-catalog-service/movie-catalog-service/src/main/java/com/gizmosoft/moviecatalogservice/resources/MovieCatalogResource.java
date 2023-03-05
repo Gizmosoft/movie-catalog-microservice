@@ -27,17 +27,6 @@ public class MovieCatalogResource {
 
     @RequestMapping("/{userId}")
     public List<CatalogItem> getCatalog(@PathVariable("userId") String userId){
-        // get ID of rated movies - hard coding using the Rating model
-<<<<<<< HEAD
-        List<Rating> ratings = Arrays.asList(
-                new Rating("1234", 4),
-                new Rating("5678", 3)
-        );
-
-        return ratings.stream().map(rating -> {
-            Movie movie = restTemplate.getForObject("http://localhost:8082/movies/" + rating.getMovieId(), Movie.class);
-            return new CatalogItem(movie.getName(), "Movie about sinking ships", rating.getRating());
-=======
 //        List<Rating> ratings = Arrays.asList(
 //                new Rating("1234", 4),
 //                new Rating("5678", 3)
@@ -62,7 +51,6 @@ public class MovieCatalogResource {
 //                    .block(); // block basically tells to block the method until the operation defined for Mono is completed. So we need to wait until we get all data from this method.
             // Put them all together
             return new CatalogItem(movie.getName(), movie.getDescription(), rating.getRating());
->>>>>>> dev
         }).collect(Collectors.toList());
 
 //        return Collections.singletonList(
