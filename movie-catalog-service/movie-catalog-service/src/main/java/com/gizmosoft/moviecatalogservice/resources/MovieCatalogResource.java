@@ -3,6 +3,7 @@ package com.gizmosoft.moviecatalogservice.resources;
 import com.gizmosoft.moviecatalogservice.model.CatalogItem;
 import com.gizmosoft.moviecatalogservice.model.Movie;
 import com.gizmosoft.moviecatalogservice.model.UserRating;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +28,7 @@ public class MovieCatalogResource {
     private WebClient.Builder webClientBuilder;
 
     @RequestMapping("/{userId}")
+    @HystrixCommand(fallbackMethod = "getFallbackCatalog")
     public List<CatalogItem> getCatalog(@PathVariable("userId") String userId){
 //        List<Rating> ratings = Arrays.asList(
 //                new Rating("1234", 4),
@@ -56,5 +59,9 @@ public class MovieCatalogResource {
 //        return Collections.singletonList(
 //                new CatalogItem("Titanic","Movie about sinking ships", 5)
 //        );
+    }
+
+    public List<CatalogItem> getFallbackCatalog(@PathVariable("userId") String userId){
+        return Arrays.asList(new CatalogItem("No Movie", "", 0));
     }
 }
