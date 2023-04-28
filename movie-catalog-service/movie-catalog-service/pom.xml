@@ -25,6 +25,11 @@
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 
@@ -45,7 +50,14 @@
 			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
 
-		<!-- Adding Netflix Hysterix -->
+		<!-- Adding Netflix Dashboard -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-netflix-hystrix-dashboard</artifactId>
+			<version>2.2.10.RELEASE</version>
+		</dependency>
+
+		<!-- Adding Netflix Hystrix -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
