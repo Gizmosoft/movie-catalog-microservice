@@ -2,7 +2,10 @@ package com.gizmosoft.moviecatalogservice.resources;
 
 import com.gizmosoft.moviecatalogservice.model.CatalogItem;
 import com.gizmosoft.moviecatalogservice.model.Movie;
+import com.gizmosoft.moviecatalogservice.model.Rating;
 import com.gizmosoft.moviecatalogservice.model.UserRating;
+import com.gizmosoft.moviecatalogservice.services.MovieInfo;
+import com.gizmosoft.moviecatalogservice.services.UserRatingInfo;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,8 +30,13 @@ public class MovieCatalogResource {
     @Autowired
     private WebClient.Builder webClientBuilder;
 
+    @Autowired
+    MovieInfo movieInfo;
+
+    @Autowired
+    UserRatingInfo userRatingInfo;
+
     @RequestMapping("/{userId}")
-    @HystrixCommand(fallbackMethod = "getFallbackCatalog")
     public List<CatalogItem> getCatalog(@PathVariable("userId") String userId){
 //        List<Rating> ratings = Arrays.asList(
 //                new Rating("1234", 4),
@@ -39,29 +47,16 @@ public class MovieCatalogResource {
         // UserRating ratings = restTemplate.getForObject("http://localhost:8083/ratingsdata/users/" + userId, UserRating.class);
 
         // Using spring.application.name used in Eureka config for client side service discovery
-        UserRating userRating = restTemplate.getForObject("http://ratings-data-service/ratingsdata/user/" + userId, UserRating.class);
+        UserRating userRating = userRatingInfo.getUserRating(userId);
 
-        return userRating.getRatings().stream().map(rating -> {
+        return userRating.getRatings().stream().map(rating ->
             // For each movie ID, call movie info service and get details
-            Movie movie = restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieId(), Movie.class);
-
-            // Using WebClient
-//            Movie movie = webClientBuilder.build()
-//                    .get()
-//                    .uri("http://localhost:8082/movies/" + rating.getMovieId())
-//                    .retrieve()
-//                    .bodyToMono(Movie.class) // Mono basically means to wait until an operation is completed.
-//                    .block(); // block basically tells to block the method until the operation defined for Mono is completed. So we need to wait until we get all data from this method.
-            // Put them all together
-            return new CatalogItem(movie.getName(), movie.getDescription(), rating.getRating());
-        }).collect(Collectors.toList());
+                        movieInfo.getCatalogItem(rating))
+            .collect(Collectors.toList());
 
 //        return Collections.singletonList(
 //                new CatalogItem("Titanic","Movie about sinking ships", 5)
 //        );
     }
 
-    public List<CatalogItem> getFallbackCatalog(@PathVariable("userId") String userId){
-        return Arrays.asList(new CatalogItem("No Movie", "", 0));
-    }
 }
